@@ -1,4 +1,4 @@
-INSERT INTO tb_category (name) VALUES ('Smartphone');
-INSERT INTO tb_category (name) VALUES ('Laptop');
-INSERT INTO tb_category (name) VALUES ('Tablet');
+INSERT INTO tb_category (name, created_At) VALUES ('Smartphone', NOW());
+INSERT INTO tb_category (name, created_At) VALUES ('Laptop', NOW());
+INSERT INTO tb_category (name, created_At) VALUES ('Tablet', NOW());
 
