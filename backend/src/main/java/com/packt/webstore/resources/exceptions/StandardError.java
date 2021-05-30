@@ -2,12 +2,11 @@ package com.packt.webstore.resources.exceptions;
 
 import java.time.Instant;
 
-public class StandardError  {
+public class StandardError {
 
 	private Instant timestamp;
 	private Integer status;
 	private String error;
-	private String trace;
 	private String message;
 	private String path;
 
@@ -16,13 +15,12 @@ public class StandardError  {
 		super();
 	}
 
-	public StandardError(Instant timestamp, Integer status, String error, String trace, String message, String path) {
+	public StandardError(Instant timestamp, Integer status, String error, String message, String path) {
 
 		super();
 		this.timestamp = timestamp;
 		this.status = status;
 		this.error = error;
-		this.trace = trace;
 		this.message = message;
 		this.path = path;
 	}
@@ -55,16 +53,6 @@ public class StandardError  {
 	public void setError(String error) {
 
 		this.error = error;
-	}
-
-	public String getTrace() {
-
-		return trace;
-	}
-
-	public void setTrace(String trace) {
-
-		this.trace = trace;
 	}
 
 	public String getMessage() {

@@ -25,7 +25,7 @@ public class ResourceExceptionHandler {
 		err.setStatus(status.value());
 		err.setError("Resource not found!");
 		err.setMessage(e.getMessage());
-		err.setTrace(null);
+		// err.setTrace(null);
 		err.setPath(request.getRequestURI());
 		
 		return ResponseEntity.status(status).body(err);
