@@ -67,7 +67,6 @@ public class CategoryResource {
 		dto = service.update(id, dto);
 
 		return ResponseEntity.ok().body(dto);
-
 	}
 
 	@DeleteMapping(value = "/{id}")
@@ -76,6 +75,5 @@ public class CategoryResource {
 		service.delete(id);
 
 		return ResponseEntity.noContent().build();
-
 	}
 }
