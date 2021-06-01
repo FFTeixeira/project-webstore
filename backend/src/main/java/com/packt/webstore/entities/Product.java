@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 @Entity
@@ -37,7 +39,10 @@ public class Product implements Serializable {
 	private String condition;
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-	private Instant date;
+	private Instant createdAt;
+
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant updatedAt;
 
 	@ManyToMany
 	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
@@ -49,8 +54,8 @@ public class Product implements Serializable {
 	}
 
 	public Product(Long id, String sku, String name, BigDecimal unitPrice, String manufacturer, long unitsInStock,
-			long unitsInOrder, String description, boolean discontinued, String condition, Instant date) {
-
+			long unitsInOrder, String description, boolean discontinued, String condition, Instant createdAt,
+			Instant updatedAt) {
 		super();
 		this.id = id;
 		this.sku = sku;
@@ -62,7 +67,8 @@ public class Product implements Serializable {
 		this.description = description;
 		this.discontinued = discontinued;
 		this.condition = condition;
-		this.date = date;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 	}
 
 	public Long getId() {
@@ -165,19 +171,31 @@ public class Product implements Serializable {
 		this.condition = condition;
 	}
 
-	public Instant getDate() {
-
-		return date;
-	}
-
-	public void setDate(Instant date) {
-
-		this.date = date;
-	}
-
 	public Set<Category> getCategories() {
 
 		return categories;
+	}
+
+	public Instant getCreatedAt() {
+
+		return createdAt;
+	}
+
+	public Instant getUpdatedAt() {
+
+		return updatedAt;
+	}
+
+	@PrePersist
+	public void prePersist() {
+
+		createdAt = Instant.now();
+	}
+
+	@PreUpdate
+	public void preUpdate() {
+
+		updatedAt = Instant.now();
 	}
 
 	@Override

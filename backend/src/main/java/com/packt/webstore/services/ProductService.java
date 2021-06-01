@@ -12,8 +12,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.packt.webstore.dto.CategoryDTO;
 import com.packt.webstore.dto.ProductDTO;
+import com.packt.webstore.entities.Category;
 import com.packt.webstore.entities.Product;
+import com.packt.webstore.repositories.CategoryRepository;
 import com.packt.webstore.repositories.ProductRepository;
 import com.packt.webstore.services.exceptions.DatabaseException;
 import com.packt.webstore.services.exceptions.ResourceNotFoundException;
@@ -23,6 +26,9 @@ public class ProductService {
 
 	@Autowired
 	private ProductRepository repository;
+
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	@Transactional(readOnly = true)
 	public Page<ProductDTO> findAllPaged(PageRequest pageRequest) {
@@ -48,7 +54,7 @@ public class ProductService {
 
 		Product entity = new Product();
 
-		entity.setName(dto.getName());
+		copyDtoToEntity(dto, entity);
 
 		entity = repository.save(entity);
 
@@ -62,7 +68,7 @@ public class ProductService {
 
 			Product entity = repository.getOne(id);
 
-			entity.setName(dto.getName());
+			copyDtoToEntity(dto, entity);
 
 			entity = repository.save(entity);
 
@@ -88,7 +94,29 @@ public class ProductService {
 		} catch (DataIntegrityViolationException e) {
 
 			throw new DatabaseException("Integrity violation!");
-			
+
+		}
+	}
+
+	private void copyDtoToEntity(ProductDTO dto, Product entity) {
+
+		entity.setSku(dto.getSku());
+		entity.setName(dto.getName());
+		entity.setUnitPrice(dto.getUnitPrice());
+		entity.setManufacturer(dto.getManufacturer());
+		entity.setUnitsInStock(dto.getUnitsInStock());
+		entity.setUnitsInOrder(dto.getUnitsInOrder());
+		entity.setDescription(dto.getDescription());
+		entity.setDiscontinued(dto.isDiscontinued());
+		entity.setCondition(dto.getCondition());	
+
+		entity.getCategories().clear();
+
+		for (CategoryDTO catDto : dto.getCategories()) {
+
+			Category category = categoryRepository.getOne(catDto.getId());
+
+			entity.getCategories().add(category);
 		}
 	}
 }
